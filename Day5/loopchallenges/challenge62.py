@@ -4,7 +4,7 @@ farms = [{"name": "NE Farm", "agriculture": ["sheep", "cows", "pigs", "chickens"
          {"name": "W Farm", "agriculture": ["pigs", "chickens", "llamas"]},
          {"name": "SE Farm", "agriculture": ["chickens", "carrots", "celery"]}]
 
-answer= input("Which farm would you like?")
+answer= input("Which farm would you like?\n")
 vegetables = ["carrots", "celery"]
 
 for farm in farms:
