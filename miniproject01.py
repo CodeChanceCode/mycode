@@ -11,6 +11,7 @@ def main():
         ("What type of environment do you like?\n\n1. Mountains 2. Water 3. Desert 4. Dry and Hot 5. Sky 6. A little bit of everywhere \n\nEnter 1, 2, 3, 4, 5  or 6: "),
         ("What is your favorite pastime?\n\n1. Cooking 2. Fishing 3. Shield Surfing 4. Mining 5. Flying 6. Exploring \n\nEnter 1, 2, 3, 4, 5 or 6: "),
         ("Which ability do you prefer?\n\n1. Swordsmanship 2. Healing 3. Electric Charge 4. Heat Resistance 5. Flying 6. Stealth \n\nEnter 1, 2, 3, 4, 5 or 6: ")
+
     ]
 
     species = {"Hylian" : 0, "Zora" : 0, "Gerudo" : 0, "Goron" : 0, "Rito" : 0, "Korok" : 0}
@@ -44,6 +45,3 @@ def main():
     print(f"\nBased on your answers, you are a {result_species}!\n")
 
 main()
-
-#todo: Need to add error catching
-#todo: need to add instance where numbers tie
