@@ -12,6 +12,7 @@ def showInstructions():
       go [direction]
       get [item]
       cook [dish]
+      set [item]
     ''')
 
 def showStatus():
@@ -21,10 +22,14 @@ def showStatus():
     # CJ- print the move count
     print('Moves:', move_count)
     print('Inventory:', inventory)
+    print("---------------------------")
     #CJ-ADDED FOR LOOP TO SHOW MULTIPLE ITEMS
     if "items" in rooms[currentRoom]:
         for item in rooms[currentRoom]['items']:
             print('You see ' + item)
+    print("---------------------------")
+    if 'event' in rooms[currentRoom] and rooms[currentRoom]['event'] is not None:
+        print('Event: ' + rooms[currentRoom]['event'])        
     print("---------------------------")
 
 inventory = []
@@ -34,7 +39,8 @@ rooms = {
             'Kitchen' : {
                   'north' : 'Pantry',
                   'east'  : 'Dining Room',
-                  'items'  : ['knife', 'spatula']
+                  'down' : 'Wine Cellar',
+                  'items' : ['knife', 'spatula', 'recipe book']
                 },
 
             'Pantry' : {
@@ -45,11 +51,16 @@ rooms = {
                   'west' : 'Kitchen',
                   'south': 'Garden',
                   'items' : ['tablecloth', 'plates', "glasses", "silverware"],
-                  'event' : None
+                  'event' : None,
+                  'table' : []
                },
             'Garden' : {
                   'north' : 'Dining Room',
                   'items' : ['tomato', 'basil', 'shears']
+            },
+            'Wine Cellar' : {
+                  'up'   : 'Kitchen',
+                  'items': ['wine']
             }
          }
 
@@ -65,6 +76,8 @@ item_descriptions = {
     'tomato': 'Ripe tomato from the garden.',
     'basil': 'Fragrant basil, freshly picked.',
     'shears': 'Useful shears for harvesting fresh ingredients.',
+    'recipe book' : 'A recipe book with one recipe: Pasta.',
+    'wine' : 'A bottle of wine, pairs well with pasta.'
 }
 
 # start the player in the Pantry
@@ -74,7 +87,7 @@ currentRoom = 'Kitchen'
 move_count = 0
 
 #CJ- a max move limit 
-max_moves = 30
+max_moves = 10
 
 showInstructions()
 
@@ -98,7 +111,7 @@ while True:
     move_count += 1
 
     #CJ-the food critic arrives after so many moves
-    if move_count == 15:
+    if move_count >= 5 and rooms['Dining Room']['event'] is None:
         rooms['Dining Room']['event'] = 'food critic'
         print("The food critic has arrived in the Dining Room! Hopefully you've started cooking their meal...")
 
@@ -130,6 +143,24 @@ while True:
         else:
             #tell them they can't get it
             print('Can\'t get ' + move[1] + '!')
+    
+    #CJ-new verb that allows you to set items on table in dining room, also adds more time to the moves count if you set wine down first
+    if move[0] == 'set':
+        if currentRoom == 'Dining Room':
+            if move[1] in inventory and move[1] in ['pasta', 'wine']:
+                # Place the item on the table and remove it from the inventory
+                rooms[currentRoom]['table'].append(move[1])
+                inventory.remove(move[1])
+                print(f"{move[1]} has been placed on the table.")
+                if move[1] == 'wine':
+                    max_moves += 15
+                    print("The food critic is enjoying the wine, you have more time to prepare the meal!")
+            elif move[1] not in ['pasta', 'wine']:
+                print("You can only place pasta or wine on the table.")
+            else:
+                print(f"You don't have {move[1]} in your inventory!")
+        else:
+            print("You can only place items on the table in the Dining Room.")
 
     #CJ- added new verb that allows you to cook pasta once all the ingredients are in inventory and in kitchen
     if move[0] == 'cook':
@@ -148,19 +179,20 @@ while True:
 
     ##Define how the player can lose
     if rooms['Dining Room']['event'] == 'food critic' and move_count > max_moves:
-        print("You took too long to prepare the meal... The food critic has left. YOU LOSE!")
+        print("You took too long to prepare the meal... The food critic has left... YOU LOSE!")
         break
     
 
 
     ## Define how a player can win
-    if currentRoom == 'Dining Room' and rooms[currentRoom]['event'] == 'food critic' and 'pasta' in inventory:
+    if currentRoom == 'Dining Room' and rooms[currentRoom]['event'] == 'food critic' and 'pasta' in rooms['Dining Room']['table']:
         print('You served the critic a delicious pasta dish with some tasty wine.... YOU WIN!')
         break
 
 #Add count of how many "moves" the player has made. COMPLETE
 #Find a way to have multiple items inside the same room. COMPLETE
 #Find a way to add descriptions to items that display when the item is picked up. COMPLETE
+#Add a wine cellar room that you go up or down for that extends the time the food critic is is willing at to wait. COMPLETE
 #Add a way to lose that implements a total amount of moves. COMPLETE
 #Add a way to announce that the food critic has arrived in the Dining Room after x amount of moves. Complete
-#Add a way to cook items in the kitchen and receive a dish from them.
+#Add a way to cook items in the kitchen and receive a dish from them. complete
