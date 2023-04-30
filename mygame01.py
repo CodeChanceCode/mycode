@@ -15,14 +15,11 @@ def showInstructions():
 
 def showStatus():
     """determine the current status of the player"""
-    # print the player's current location
     print('---------------------------')
     print('You are in the ' + currentRoom)
     # CJ- print the move count
     print('Moves:', move_count)
-    # print what the player is carrying
     print('Inventory:', inventory)
-    # check if there's an item in the room, if so print it
     #CJ-ADDED FOR LOOP TO SHOW MULTIPLE ITEMS
     if "items" in rooms[currentRoom]:
         for item in rooms[currentRoom]['items']:
@@ -40,28 +37,43 @@ rooms = {
                 },
 
             'Pantry' : {
-                  'south' : 'kitchen',
-                  'items'  : ['flour', 'sugar', 'egg', 'butter']
+                  'south' : 'Kitchen',
+                  'items' : ['sugar', 'beef', 'cheese']
                 },
             'Dining Room' : {
                   'west' : 'Kitchen',
                   'south': 'Garden',
-                  'items' : ['tablecloth', 'plates', "glasses"]
+                  'items' : ['tablecloth', 'plates', "glasses", "silverware"],
+                  'event' : None
                },
             'Garden' : {
                   'north' : 'Dining Room',
-                  'items' : ['tomato', 'basil', 'shovel', 'shears']
+                  'items' : ['tomato', 'basil', 'shears']
             }
          }
 
 #CJ- A dictionary that contains descriptions for the items
-item_descriptions = {}
+item_descriptions = {
+    'knife' : "A sharp knife for cutting.",
+    'spatula' : "A spatula for flipping or stirring.",
+    'sugar': 'Sugar to sweeten your dishes.',
+    'beef': 'Looks like some good ground beef.',
+    'tablecloth': 'An elegant tablecloth for setting the table.',
+    'plates': 'Fine china plates for serving your dishes.',
+    'glasses': 'Crystal glasses for serving drinks.',
+    'tomato': 'Ripe tomato from the garden.',
+    'basil': 'Fragrant basil, freshly picked.',
+    'shears': 'Useful shears for harvesting fresh ingredients.',
+}
 
 # start the player in the Pantry
-currentRoom = 'Pantry'
+currentRoom = 'Kitchen'
 
 #CJ-start the player with zero moves
 move_count = 0
+
+#CJ- a max move limit 
+max_moves = 30
 
 showInstructions()
 
@@ -77,11 +89,17 @@ while True:
 
     # normalizing input:
     # .lower() makes it lower case, .split() turns it to a list
-    # therefore, "get golden key" becomes ["get", "golden key"]          
-    move = move.lower().split(" ", 1)
+    # therefore, "get golden key" becomes ["get", "golden key"] 
+    #CJ changed to maxsplit         
+    move = move.lower().split(maxsplit=1)
 
     #CJ-move_count goes up one after move is made
     move_count += 1
+
+    #CJ-the food critic arrives after so many moves
+    if move_count == 15:
+        rooms['Dining Room']['event'] = 'food critic'
+        print("The food critic has arrived in the Dining Room! Hopefully you've started cooking their meal...")
 
     #if they type 'go' first
     if move[0] == 'go':
@@ -112,18 +130,20 @@ while True:
             #tell them they can't get it
             print('Can\'t get ' + move[1] + '!')
 
-    ## If a player enters a room with a monster
-    if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
-        print('A monster has got you... GAME OVER!')
+    ##Define how the player can lose
+    if move_count > max_moves:
+        print("You took too long to prepare the meal... The food critic has left. YOU LOSE!")
         break
+    
 
 
     ## Define how a player can win
-    if currentRoom == 'Garden' and 'key' in inventory and 'potion' in inventory:
-        print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
+    if currentRoom == 'Dining Room' and 'pasta' in inventory and 'wine' in inventory:
+        print('You served the critic a delicious pasta dish with some tasty wine.... YOU WIN!')
         break
 
 #Add count of how many "moves" the player has made. COMPLETE
 #Find a way to have multiple items inside the same room. COMPLETE
 #Find a way to add descriptions to items that display when the item is picked up. COMPLETE
-
+#Add a way to lose that implements a total amount of moves. COMPLETE
+#Add a way to announce that the food critic has arrived in the Dining Room after x amount of moves.
