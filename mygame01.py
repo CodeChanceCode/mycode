@@ -11,6 +11,7 @@ def showInstructions():
     Commands:
       go [direction]
       get [item]
+      cook [dish]
     ''')
 
 def showStatus():
@@ -23,7 +24,7 @@ def showStatus():
     #CJ-ADDED FOR LOOP TO SHOW MULTIPLE ITEMS
     if "items" in rooms[currentRoom]:
         for item in rooms[currentRoom]['items']:
-            print('You see a ' + item)
+            print('You see ' + item)
     print("---------------------------")
 
 inventory = []
@@ -130,15 +131,30 @@ while True:
             #tell them they can't get it
             print('Can\'t get ' + move[1] + '!')
 
+    #CJ- added new verb that allows you to cook pasta once all the ingredients are in inventory and in kitchen
+    if move[0] == 'cook':
+        if move[1] == 'pasta':
+            required_ingredients = ['beef', 'sugar', 'cheese', 'tomato', 'noodle', 'basil']
+            if all(ingredient in inventory for ingredient in required_ingredients):
+                if currentRoom == 'Kitchen':
+                    print("You cooked a delicious pasta dish!")
+                    inventory.append('pasta')
+                    for ingredient in required_ingredients:
+                        inventory.remove(ingredient)
+                else:
+                    print("You can only cook pasta in the Kitchen.")
+            else:
+                print("You don't have all the ingredients to cook pasta.") 
+
     ##Define how the player can lose
-    if move_count > max_moves:
+    if rooms['Dining Room']['event'] == 'food critic' and move_count > max_moves:
         print("You took too long to prepare the meal... The food critic has left. YOU LOSE!")
         break
     
 
 
     ## Define how a player can win
-    if currentRoom == 'Dining Room' and 'pasta' in inventory and 'wine' in inventory:
+    if currentRoom == 'Dining Room' and rooms[currentRoom]['event'] == 'food critic' and 'pasta' in inventory:
         print('You served the critic a delicious pasta dish with some tasty wine.... YOU WIN!')
         break
 
@@ -146,4 +162,5 @@ while True:
 #Find a way to have multiple items inside the same room. COMPLETE
 #Find a way to add descriptions to items that display when the item is picked up. COMPLETE
 #Add a way to lose that implements a total amount of moves. COMPLETE
-#Add a way to announce that the food critic has arrived in the Dining Room after x amount of moves.
+#Add a way to announce that the food critic has arrived in the Dining Room after x amount of moves. Complete
+#Add a way to cook items in the kitchen and receive a dish from them.
