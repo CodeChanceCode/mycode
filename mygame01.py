@@ -13,6 +13,7 @@ def showInstructions():
       get [item]
       cook [dish]
       set [item]
+      look around
     ''')
 
 def showStatus():
@@ -30,7 +31,7 @@ def showStatus():
     print("---------------------------")
     if 'event' in rooms[currentRoom] and rooms[currentRoom]['event'] is not None:
         print('Event: ' + rooms[currentRoom]['event'])        
-    print("---------------------------")
+        print("---------------------------")
 
 inventory = []
 
@@ -45,14 +46,15 @@ rooms = {
 
             'Pantry' : {
                   'south' : 'Kitchen',
-                  'items' : ['sugar', 'beef', 'cheese']
+                  'items' : ['sugar', 'beef', 'cheese', 'noodles']
                 },
             'Dining Room' : {
                   'west' : 'Kitchen',
                   'south': 'Garden',
-                  'items' : ['tablecloth', 'plates', "glasses", "silverware"],
+                  'items' : [],
                   'event' : None,
-                  'table' : []
+                  'table' : [],
+                  'furniture' : ['table']
                },
             'Garden' : {
                   'north' : 'Dining Room',
@@ -70,14 +72,12 @@ item_descriptions = {
     'spatula' : "A spatula for flipping or stirring.",
     'sugar': 'Sugar to sweeten your dishes.',
     'beef': 'Looks like some good ground beef.',
-    'tablecloth': 'An elegant tablecloth for setting the table.',
-    'plates': 'Fine china plates for serving your dishes.',
-    'glasses': 'Crystal glasses for serving drinks.',
     'tomato': 'Ripe tomato from the garden.',
     'basil': 'Fragrant basil, freshly picked.',
     'shears': 'Useful shears for harvesting fresh ingredients.',
     'recipe book' : 'A recipe book with one recipe: Pasta.',
-    'wine' : 'A bottle of wine, pairs well with pasta.'
+    'wine' : 'A bottle of wine, pairs well with pasta.',
+    'noodles' : 'Some handmade noodles for pasta.'
 }
 
 # start the player in the Pantry
@@ -87,7 +87,7 @@ currentRoom = 'Kitchen'
 move_count = 0
 
 #CJ- a max move limit 
-max_moves = 10
+max_moves = 30
 
 showInstructions()
 
@@ -111,7 +111,7 @@ while True:
     move_count += 1
 
     #CJ-the food critic arrives after so many moves
-    if move_count >= 5 and rooms['Dining Room']['event'] is None:
+    if move_count >= 10 and rooms['Dining Room']['event'] is None:
         rooms['Dining Room']['event'] = 'food critic'
         print("The food critic has arrived in the Dining Room! Hopefully you've started cooking their meal...")
 
@@ -126,11 +126,11 @@ while True:
             print('You can\'t go that way!')
 
     #if they type 'get' first
+    #CJ- add only being able to get tomato or basil if they have shears first
     if move[0] == 'get' :
-        # make two checks:
-        # 1. if the current room contains an item
-        # 2. if the item in the room matches the item the player wishes to get
-        if "items" in rooms[currentRoom] and move[1] in rooms[currentRoom]['items']:
+        if move[1] in ['tomato', 'basil'] and 'shears' not in inventory:
+            print(f"You need shears to get the {move[1]}!")
+        elif "items" in rooms[currentRoom] and move[1] in rooms[currentRoom]['items']:
             #add the item to their inventory
             inventory.append(move[1])
             print(move[1] + ' got!')
@@ -144,6 +144,16 @@ while True:
             #tell them they can't get it
             print('Can\'t get ' + move[1] + '!')
     
+    #CJ-shows the interactable furniture in the current room
+    if move[0] == 'look':
+        if move[1] == 'around':
+            if 'furniture' in rooms[currentRoom]:
+                print("You look around and see the following furniture:")
+                for furniture in rooms[currentRoom]['furniture']:
+                    print(furniture)
+        else:
+            print("There is no usable furniture in this room.")
+
     #CJ-new verb that allows you to set items on table in dining room, also adds more time to the moves count if you set wine down first
     if move[0] == 'set':
         if currentRoom == 'Dining Room':
@@ -153,7 +163,7 @@ while True:
                 inventory.remove(move[1])
                 print(f"{move[1]} has been placed on the table.")
                 if move[1] == 'wine':
-                    max_moves += 15
+                    max_moves += 10
                     print("The food critic is enjoying the wine, you have more time to prepare the meal!")
             elif move[1] not in ['pasta', 'wine']:
                 print("You can only place pasta or wine on the table.")
@@ -165,7 +175,7 @@ while True:
     #CJ- added new verb that allows you to cook pasta once all the ingredients are in inventory and in kitchen
     if move[0] == 'cook':
         if move[1] == 'pasta':
-            required_ingredients = ['beef', 'sugar', 'cheese', 'tomato', 'noodle', 'basil']
+            required_ingredients = ['beef', 'sugar', 'cheese', 'tomato', 'noodles', 'basil']
             if all(ingredient in inventory for ingredient in required_ingredients):
                 if currentRoom == 'Kitchen':
                     print("You cooked a delicious pasta dish!")
@@ -183,16 +193,17 @@ while True:
         break
     
 
-
     ## Define how a player can win
     if currentRoom == 'Dining Room' and rooms[currentRoom]['event'] == 'food critic' and 'pasta' in rooms['Dining Room']['table']:
         print('You served the critic a delicious pasta dish with some tasty wine.... YOU WIN!')
         break
 
 #Add count of how many "moves" the player has made. COMPLETE
-#Find a way to have multiple items inside the same room. COMPLETE
-#Find a way to add descriptions to items that display when the item is picked up. COMPLETE
+#Add a way to have multiple items inside the same room. COMPLETE
+#Add a way to add descriptions to items that display when the item is picked up. COMPLETE
 #Add a wine cellar room that you go up or down for that extends the time the food critic is is willing at to wait. COMPLETE
 #Add a way to lose that implements a total amount of moves. COMPLETE
 #Add a way to announce that the food critic has arrived in the Dining Room after x amount of moves. Complete
 #Add a way to cook items in the kitchen and receive a dish from them. complete
+#Add a way to only be able to get the tomato and basil if you have the shears in your inventory. complete
+#Add a way to 'look around' a room to see what interactable furniture there is. complete
