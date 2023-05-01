@@ -176,7 +176,7 @@ while True:
     if move[0] == 'cook':
         if move[1] == 'pasta':
             required_ingredients = ['beef', 'sugar', 'cheese', 'tomato', 'noodles', 'basil']
-            if all(ingredient in inventory for ingredient in required_ingredients):
+            if all(ingredient in inventory for ingredient in required_ingredients): #CJ - checks if ALL conditions are true for both lists
                 if currentRoom == 'Kitchen':
                     print("You cooked a delicious pasta dish!")
                     inventory.append('pasta')
@@ -207,3 +207,4 @@ while True:
 #Add a way to cook items in the kitchen and receive a dish from them. complete
 #Add a way to only be able to get the tomato and basil if you have the shears in your inventory. complete
 #Add a way to 'look around' a room to see what interactable furniture there is. complete
+#Add a way to display all the ways you can "go" while in a room- not complete
