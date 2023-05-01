@@ -195,7 +195,7 @@ while True:
 
     ## Define how a player can win
     if currentRoom == 'Dining Room' and rooms[currentRoom]['event'] == 'food critic' and 'pasta' in rooms['Dining Room']['table']:
-        print('You served the critic a delicious pasta dish with some tasty wine.... YOU WIN!')
+        print('You served the critic a delicious pasta dish.... YOU WIN!')
         break
 
 #Add count of how many "moves" the player has made. COMPLETE
@@ -208,3 +208,4 @@ while True:
 #Add a way to only be able to get the tomato and basil if you have the shears in your inventory. complete
 #Add a way to 'look around' a room to see what interactable furniture there is. complete
 #Add a way to display all the ways you can "go" while in a room- not complete
+#Move the 'rooms' and 'ingredient descriptions' into a separate file to clean up code. not complete
