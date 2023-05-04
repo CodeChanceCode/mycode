@@ -6,14 +6,19 @@
   <body>
     {% if filter_type == "attack" %}
       <h1>Random Attack Equipment</h1>
+      <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
       <p>Name: {{ equipment["name"] }}</p>
+      <p>Description: {{ equipment["description"] }}</p>
       <p>Attack: {{ equipment["attack"] }}</p>
     {% elif filter_type == "defense" %}
       <h1>Random Defense Equipment</h1>
+      <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
       <p>Name: {{ equipment["name"] }}</p>
+      <p>Description: {{ equipment["description"] }}</p>
       <p>Defense: {{ equipment["defense"] }}</p>
     {% else %}
       <h1>No Equipment Selected</h1>
     {% endif %}
+     <a href="{{ url_for('landing') }}">Back to Landing Page</a>
   </body>
 </html>

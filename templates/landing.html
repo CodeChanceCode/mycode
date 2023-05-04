@@ -7,8 +7,14 @@
 <body>
     <h2>Filter Equipment</h2>
     <form action="/equipment" method="POST">
-        <button type="submit" name="filter" value="attack">Show Attack Equipment</button></a>
-        <button type="submit" name="filter" value="defense">Show Defense Equipment</button></a>
+        <button type="submit" name="filter" value="attack">Show Random Weapon</button></a>
+        <button type="submit" name="filter" value="defense">Show Random Shield</button></a>
+    </form>
+
+    <h2>Search Equipment</h2>
+    <form action="/search_results" method="GET">
+        <input type="text" name="keyword" placeholder="Enter Name of Equipment">
+        <button type="submit">Search</button>
     </form>
 </body>
 </html>
