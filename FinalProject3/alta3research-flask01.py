@@ -12,7 +12,7 @@ app = Flask(__name__)
 def landing():
     return render_template("landing.html")
 
-@app.route("/equipment", methods=["GET","POST"])
+@app.route("/equipment", methods=["GET","POST"]) #random equipment page
 def list_equipment():
     
     filter_type = request.form.get("filter", "all")
@@ -23,7 +23,7 @@ def list_equipment():
 
     filtered_equipment = [
         item for item in data["data"]
-        if (filter_type == "attack" and (item.get("attack") or 0) > 0 and (item.get("defense") or 0) == 0) or
+        if (filter_type == "attack" and (item.get("attack") or 0) > 0 and (item.get("defense") or 0) == 0) or #checks for none values with: or 0)
            (filter_type == "defense" and (item.get("defense") or 0) > 0 and (item.get("attack") or 0) == 0)
     ]
     

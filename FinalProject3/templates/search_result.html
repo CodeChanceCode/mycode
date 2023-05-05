@@ -7,13 +7,23 @@
 <style>
         body {
             background-image: url('https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700702996-1024x576.jpg');
-            background-size: cover;
+            background-size: contain;
         }
-    </style>
+            .content {
+            background-color: rgba(0, 128, 45, 0.7); 
+            color: white; 
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            
+        }
+ </style>
 </head>
-<body style="font-family: 'Yeseva One', cursive;">
-    <h1>Search Results</h1>
-    {% if search_results %}
+ <body style="font-family: 'Yeseva One', cursive;">
+    <div class="content">
+     <h1>Search Results</h1>
+     {% if search_results %}
         <ul>
             {% for item in search_results | sort(attribute='name')%}
                 <li>
@@ -30,9 +40,10 @@
                 </li>
             {% endfor %}
         </ul>
-    {% else %}
-        <p>No items found.</p>
-    {% endif %}
-    <a href="{{ url_for('landing') }}">Back to Main Page</a>
+        {% else %}
+            <p>No items found.</p>
+        {% endif %}
+        <a href="{{ url_for('landing') }}">Back to Main Page</a>
+    </div>
 </body>
 </html>

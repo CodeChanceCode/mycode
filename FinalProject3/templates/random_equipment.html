@@ -7,29 +7,41 @@
         body {
             background-image: url('https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700702996-1024x576.jpg');
             background-size: cover;
+        
+        .content {
+            background-color: rgba(0, 128, 60, 0.7); /* White background with 60% opacity */
+            color:white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            font-size: 1.2em;
         }
+          }
     </style>
   </head>
   <body style="font-family: 'Yeseva One', cursive;">
-    {% if filter_type == "attack" %}
-      <h1>Random Attack Equipment</h1>
+    <div class="content">
+      {% if filter_type == "attack" %}
+        <h1>Random Attack Equipment</h1>
 
-      <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
+        <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
 
-      <p>Name: {{ equipment["name"].upper() }}</p>
-      <p>Description: {{ equipment["description"] }}</p>
-      <p>Attack: {{ equipment["attack"] }}</p>
-    {% elif filter_type == "defense" %}
-      <h1>Random Defense Equipment</h1>
+        <p>Name: {{ equipment["name"].upper() }}</p>
+        <p>Description: {{ equipment["description"] }}</p>
+        <p>Attack: {{ equipment["attack"] }}</p>
+        
+      {% elif filter_type == "defense" %}
+        <h1>Random Defense Equipment</h1>
 
-      <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
+        <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
 
-      <p>Name: {{ equipment["name"] }}</p>
-      <p>Description: {{ equipment["description"] }}</p>
-      <p>Defense: {{ equipment["defense"] }}</p>
-    {% else %}
-      <h1>No Equipment Selected</h1>
-    {% endif %}
-     <a href="{{ url_for('landing') }}">Back to Main Page</a>
+        <p>Name: {{ equipment["name"].upper() }}</p>
+        <p>Description: {{ equipment["description"] }}</p>
+        <p>Defense: {{ equipment["defense"] }}</p>
+
+      {% endif %}
+      <a href="{{ url_for('landing') }}">Back to Main Page</a>
+    </div>
   </body>
 </html>

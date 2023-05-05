@@ -9,9 +9,9 @@ def equipment(data):
     for item in data:
         print("Name:", item["name"])
         print("Description:", item["description"])
-        if "attack" in item and item["attack"] > 0:
+        if item.get("attack", 0) > 0:
             print("Attack:", item["attack"])
-        if "defense" in item and item["defense"] > 0:
+        if item.get("defense", 0) > 0:
             print("Defense:", item["defense"])
         print("\n")
 
@@ -21,10 +21,9 @@ def main():
     response = requests.post(URL, json=search)
 
     equipment_data = response.json()
-    if equipment_data:
-        equipment(equipment_data)
-    else:
-        print("No equipment items found.")
+   
+    equipment(equipment_data)
+  
     
 
 if __name__ == "__main__":
