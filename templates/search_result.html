@@ -3,21 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Search Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet">
+<style>
+        body {
+            background-image: url('https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700702996-1024x576.jpg');
+            background-size: cover;
+        }
+    </style>
 </head>
-<body>
+<body style="font-family: 'Yeseva One', cursive;">
     <h1>Search Results</h1>
     {% if search_results %}
         <ul>
-            {% for item in search_results %}
+            {% for item in search_results | sort(attribute='name')%}
                 <li>
-                    <h3>{{ item["name"] }}</h3>
-                    <p>{{ item["description"] }}</p>
+                <h3>{{ item["name"].upper() }}</h3>
+                <p>{{ item["description"] }}</p>
+                {% if item["attack"] > 0 and item["defense"] == 0 %}
+                    <p>Attack: {{ item["attack"] }}</p>
+                {% elif item["defense"] > 0 and item["attack"] == 0 %}
+                    <p>Defense: {{ item["defense"] }}</p>
+                {% else %}
+                    <p>Attack: {{ item["attack"] }}</p>
+                    <p>Defense: {{ item["defense"] }}</p>
+                {% endif %}
                 </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>No items found.</p>
     {% endif %}
-    <a href="{{ url_for('landing') }}">Back to Landing Page</a>
+    <a href="{{ url_for('landing') }}">Back to Main Page</a>
 </body>
 </html>

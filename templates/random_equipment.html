@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Zelda BOTW Equipment</title>
+    <title>Random Item</title>
+    <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet">
+  <style>
+        body {
+            background-image: url('https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700702996-1024x576.jpg');
+            background-size: cover;
+        }
+    </style>
   </head>
-  <body>
+  <body style="font-family: 'Yeseva One', cursive;">
     {% if filter_type == "attack" %}
       <h1>Random Attack Equipment</h1>
+
       <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
-      <p>Name: {{ equipment["name"] }}</p>
+
+      <p>Name: {{ equipment["name"].upper() }}</p>
       <p>Description: {{ equipment["description"] }}</p>
       <p>Attack: {{ equipment["attack"] }}</p>
     {% elif filter_type == "defense" %}
       <h1>Random Defense Equipment</h1>
+
       <img src="{{ equipment["image"] }}" alt="{{ equipment["name"] }} image">
+
       <p>Name: {{ equipment["name"] }}</p>
       <p>Description: {{ equipment["description"] }}</p>
       <p>Defense: {{ equipment["defense"] }}</p>
     {% else %}
       <h1>No Equipment Selected</h1>
     {% endif %}
-     <a href="{{ url_for('landing') }}">Back to Landing Page</a>
+     <a href="{{ url_for('landing') }}">Back to Main Page</a>
   </body>
 </html>

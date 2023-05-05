@@ -39,7 +39,7 @@ def search_equipment():
         keyword = request.args.get("keyword", "").lower()
 
     if not keyword:
-        return jsonify({"error": "No keyword provided. Please provide a keyword to search for equipment items."}), 400
+        return jsonify({"error": "No keyword provided. Please provide a keyword to search for equipment items."})
 
     url = "https://botw-compendium.herokuapp.com/api/v2/category/equipment"
     response = requests.get(url)
