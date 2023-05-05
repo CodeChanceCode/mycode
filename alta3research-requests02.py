@@ -9,25 +9,23 @@ def equipment(data):
     for item in data:
         print("Name:", item["name"])
         print("Description:", item["description"])
-        if "attack" in item:
+        if "attack" in item and item["attack"] > 0:
             print("Attack:", item["attack"])
-        if "defense" in item:
+        if "defense" in item and item["defense"] > 0:
             print("Defense:", item["defense"])
         print("\n")
 
 def main():
     keyword = input("Enter a keyword to search for equipment items: ")
     search = {"keyword": keyword}
-    resp = requests.post(URL, json=search)
+    response = requests.post(URL, json=search)
 
-    if resp.status_code == 200:
-        equipment_data = resp.json()
-        if equipment_data:
-            equipment(equipment_data)
-        else:
-            print("No equipment items found.")
+    equipment_data = response.json()
+    if equipment_data:
+        equipment(equipment_data)
     else:
-        print("Error occurred while fetching the data.")
+        print("No equipment items found.")
+    
 
 if __name__ == "__main__":
     main()
